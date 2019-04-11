@@ -96,9 +96,14 @@ class StructuralElement(object):
 			yield tl
 			(hd, tl) = os.path.split(hd)
 
+# def parse_structural_element(csv_row):
+# 	name = csv_row[1]
+# 	complexity = csv_row[4]
+# 	return StructuralElement(name, complexity)
+
 def parse_structural_element(csv_row):
-	name = csv_row[1]
-	complexity = csv_row[4]
+	name = csv_row[0]
+	complexity = csv_row[1]
 	return StructuralElement(name, complexity)
 
 def make_element_weight_parser(weight_column):
@@ -193,7 +198,7 @@ def run(args):
 	weight_calculator = module_weight_calculator_from(raw_weights)
 
 	structure_input = parse_csv(args.structure, 
-								expected_format='language,filename,blank,comment,code',
+								expected_format='entity,n-revs',
 								parse_action=parse_structural_element)
 	weighted_system_structure = generate_structure_from(structure_input, weight_calculator)
 	write_json(weighted_system_structure)

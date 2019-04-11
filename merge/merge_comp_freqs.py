@@ -69,9 +69,15 @@ def parse_freqs(merged, row):
 	freqs = row[1]
 	merged.extend_with(name, freqs)
 
+def parse_fixes(merged, row):
+	name = as_os_aware_path(row[0])
+	fixes = row[1]
+	merged.record_detected(name, fixes)
+
 def merge(revs_file, comp_file):
 	merged = Merged()
-	parse_csv(merged, comp_file, parse_complexity, expected_format='language,filename,blank,comment,code')
+	# parse_csv(merged, comp_file, parse_complexity, expected_format='language,filename,blank,comment,code')
+	parse_csv(merged, comp_file, parse_fixes, expected_format='entity,n-revs')
 	parse_csv(merged, revs_file, parse_freqs, expected_format='entity,n-revs')
 	write_csv(merged.sorted_result())
 
